@@ -169,7 +169,7 @@ class TaskCreateResponse(TaskCreate):
         from_attributes = True
 ```
 
-## routers/tasks
+## routers/tasks.py
 
 ```python
 from fastapi import APIRouter
@@ -182,11 +182,9 @@ router = APIRouter()
 async def list_tasks():
     return [task_schema.Task(id=1, title="1つ目のTODOタスク")]
 
-
 @router.post("/tasks", response_model=task_schema.TaskCreateResponse)
 async def create_task(task_body: task_schema.TaskCreate):
     return task_schema.TaskCreateResponse(id=1, **task_body.model_dump()) # task_bodyにidを追加して返す
-
 
 @router.put("/tasks/{task_id}")
 async def update_task(task_id: int, task_body: task_schema.TaskCreate):
@@ -196,5 +194,21 @@ async def update_task(task_id: int, task_body: task_schema.TaskCreate):
 async def delete_task(task_id: int):
     return
 
+```
+
+## routers/done.py
+
+```python
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.put("/tasks/{task_id}/done", response_model=None)
+async def mark_task_as_done(task_id: int):
+    return
+
+@router.delete("/tasks/{task_id}/done", response_model=None)
+async def unmark_task_as_done(task_id: int):
+    return
 ```
 
